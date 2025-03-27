@@ -48,6 +48,8 @@ else
 app.UseSerilogRequestLogging();
 app.UseHttpLogging();
 
+app.UseDefaultFiles();
+
 app.UseStaticFiles();
 // Enable HTTPS redirection
 app.UseHttpsRedirection();

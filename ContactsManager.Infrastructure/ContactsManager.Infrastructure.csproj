@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+
+	  <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UserSecretsId>026330d6-73c5-43b2-a71b-c27c45083056</UserSecretsId>
@@ -25,7 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ContactsManager.Core\ContactsManager.Core.csproj" />
+	  <None Include="SeedData\**" CopyToOutputDirectory="PreserveNewest" />
+	  <ProjectReference Include="..\ContactsManager.Core\ContactsManager.Core.csproj" />
   </ItemGroup>
 
 </Project>
