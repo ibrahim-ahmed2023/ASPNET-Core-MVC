@@ -5,6 +5,7 @@ using ContactsManager.Core.Enums;
 using CRUDExample.Filters;
 using CRUDExample.Filters.ActionFilters;
 using CRUDExample.Filters.AuthorizationFilter;
+using CRUDExample.Filters.ExceptionFilters;
 using CRUDExample.Filters.ResourceFilters;
 using CRUDExample.Filters.ResultFilters;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ namespace ContactsManager.Web.Controllers
 {
     [Route("[controller]")]
     [ResponseHeaderFilterFactory("My-Key-From-Controller", "My-Value-From-Controller", 3)]
-    //[TypeFilter(typeof(HandleExceptionFilter))]
+    [TypeFilter(typeof(HandleExceptionFilter))]
     [TypeFilter(typeof(PersonAlwaysRunResultFilter))]
     public class PersonsController : Controller
     {

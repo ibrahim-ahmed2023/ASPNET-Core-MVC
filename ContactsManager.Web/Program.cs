@@ -6,20 +6,18 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Serilog
+// Serilog
 builder.Host.UseSerilog((HostBuilderContext context, IServiceProvider services, LoggerConfiguration loggerConfiguration) => {
-
     loggerConfiguration
-    .ReadFrom.Configuration(context.Configuration) //read configuration settings from built-in IConfiguration
-    .ReadFrom.Services(services); //read out current app's services and make them available to serilog
+        .ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services);
 });
 
 builder.Services.ConfigureServices(builder.Configuration);
 
-
 var app = builder.Build();
 
-
+// Seed data
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -37,11 +35,10 @@ using (var scope = app.Services.CreateScope())
 if (builder.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseHsts(); // Add HSTS for production (Strict Transport Security)
+    app.UseHsts();
 }
 else
 {
-    app.UseExceptionHandler("/Error");
     app.UseExceptionHandlingMiddleware();
 }
 
@@ -49,20 +46,24 @@ app.UseSerilogRequestLogging();
 app.UseHttpLogging();
 
 app.UseDefaultFiles();
-
 app.UseStaticFiles();
-// Enable HTTPS redirection
 app.UseHttpsRedirection();
 
-// Add authentication and authorization middleware
 app.UseRouting();
-app.UseAuthentication(); // Add this
-app.UseAuthorization();  // Add this
+app.UseAuthentication();
+app.UseAuthorization();
 
-if (builder.Environment.IsEnvironment("Test") == false)
+if (!builder.Environment.IsEnvironment("Test"))
     Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
 
+// Add MVC routing
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Person}/{action=Index}/{id?}");
+
+// Keep this if you also have API controllers
 app.MapControllers();
 
 app.Run();
-public partial class Program { } //make the auto-generated Program accessible programmatically
+
+public partial class Program { }
